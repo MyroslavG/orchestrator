@@ -1,0 +1,36 @@
+services:
+  # Backend API
+  - type: web
+    name: orchestrator-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GOOGLE_CLOUD_PROJECT
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/secrets/vertex-ai-key.json
+      - key: GCP_REGION
+        value: us-central1
+
+  # Frontend (Static Site)
+  - type: web
+    name: orchestrator-frontend
+    runtime: static
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: VITE_API_URL
+        value: https://orchestrator-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

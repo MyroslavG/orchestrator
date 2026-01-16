@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(pip uninstall:*)",
+      "Bash(python -c \"from google import genai; import os; client = genai.Client\\(api_key=''AIzaSyC_6qLMAWYFp4NockjUeeGgMjvEOiIlNRY''\\); models = [m.name for m in client.models.list\\(config={''page_size'': 50}\\)]; print\\(''\\\\n''.join\\(models[:20]\\)\\)\")",
+      "Bash(python:*)",
+      "Bash(where:*)",
+      "Bash(C:UsersrealmAppDataLocalProgramsPythonPython311python.exe -m pip show google-genai)",
+      "Bash(curl:*)"
+    ]
+  }
+}
