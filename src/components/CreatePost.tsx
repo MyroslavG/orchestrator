@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Sparkles } from 'lucide-react'; // Calendar 
+import { useState, useEffect, useRef } from 'react';
+import { Sparkles, Trash2 } from 'lucide-react';
 import { getTemplates, createPost } from '../api';
 
 interface Template {
@@ -27,6 +27,7 @@ export default function CreatePost() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [generatedPost, setGeneratedPost] = useState<GeneratedPost | null>(null)
+  const generatedPostRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     loadTemplates()
@@ -61,6 +62,11 @@ export default function CreatePost() {
       setGeneratedPost(result)
       setCustomPrompt('')
       setScheduleDate('')
+
+      // Scroll to generated post after a short delay
+      setTimeout(() => {
+        generatedPostRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
     } catch (error) {
       console.error('Failed to create post:', error)
       alert('Failed to create post. Please try again.')
@@ -192,16 +198,23 @@ export default function CreatePost() {
 
       {/* Success Message */}
       {success && (
-        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 mt-6">
-          <p className="text-green-400 font-medium">✨ Post created successfully!</p>
+        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 mt-6 animate-pulse">
+          <p className="text-green-400 font-medium">✨ Post created successfully! Scroll down to see your generated post.</p>
         </div>
       )}
 
       {/* Generated Post Preview */}
       {generatedPost && (
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden mt-6">
-          <div className="p-4 border-b border-gray-800">
+        <div ref={generatedPostRef} className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden mt-6">
+          <div className="p-4 border-b border-gray-800 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Generated Post</h2>
+            <button
+              onClick={() => setGeneratedPost(null)}
+              className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
+              title="Clear generated post"
+            >
+              <Trash2 className="w-5 h-5 text-gray-500 group-hover:text-red-400" />
+            </button>
           </div>
 
           {/* Image */}

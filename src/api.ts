@@ -51,3 +51,11 @@ export async function createCampaign(data: {
   if (!response.ok) throw new Error('Failed to create campaign')
   return response.json()
 }
+
+export async function deletePost(postId: string) {
+  const response = await fetch(`${API_URL}/posts/${postId}`, {
+    method: 'DELETE'
+  })
+  if (!response.ok) throw new Error('Failed to delete post')
+  return response.json()
+}

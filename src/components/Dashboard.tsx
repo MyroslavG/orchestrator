@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Calendar, TrendingUp, FileText, X } from 'lucide-react'
-import { getPosts, getCampaigns } from '../api'
+import { Calendar, TrendingUp, FileText, X, Trash2 } from 'lucide-react'
+import { getPosts, getCampaigns, deletePost } from '../api'
 
 interface Post {
   id: string
@@ -45,6 +45,24 @@ export default function Dashboard() {
       console.error('Failed to load data:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeletePost = async (postId: string, e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent opening the modal
+    if (!confirm('Are you sure you want to delete this post?')) {
+      return
+    }
+
+    try {
+      await deletePost(postId)
+      setPosts(posts.filter(p => p.id !== postId))
+      if (selectedPost?.id === postId) {
+        setSelectedPost(null)
+      }
+    } catch (error) {
+      console.error('Failed to delete post:', error)
+      alert('Failed to delete post. Please try again.')
     }
   }
 
@@ -134,16 +152,25 @@ export default function Dashboard() {
                 {/* Content */}
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full bg-blue-500/10 text-blue-400">
-                      {post.template_type.replace('_', ' ')}
-                    </span>
-                    <span className={`text-xs font-medium px-3 py-1 rounded-full ${
-                      post.status === 'scheduled'
-                        ? 'bg-green-500/10 text-green-400'
-                        : 'bg-gray-500/10 text-gray-400'
-                    }`}>
-                      {post.status}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-medium px-3 py-1 rounded-full bg-blue-500/10 text-blue-400">
+                        {post.template_type.replace('_', ' ')}
+                      </span>
+                      <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+                        post.status === 'scheduled'
+                          ? 'bg-green-500/10 text-green-400'
+                          : 'bg-gray-500/10 text-gray-400'
+                      }`}>
+                        {post.status}
+                      </span>
+                    </div>
+                    <button
+                      onClick={(e) => handleDeletePost(post.id, e)}
+                      className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
+                      title="Delete post"
+                    >
+                      <Trash2 className="w-4 h-4 text-gray-500 group-hover:text-red-400" />
+                    </button>
                   </div>
 
                   <p className="text-sm text-gray-300 line-clamp-3 mb-3">{post.caption}</p>
@@ -215,12 +242,21 @@ export default function Dashboard() {
             {/* Modal Header */}
             <div className="sticky top-0 bg-gray-900 border-b border-gray-800 p-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold">Post Details</h2>
-              <button
-                onClick={() => setSelectedPost(null)}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => handleDeletePost(selectedPost.id, e)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
+                  title="Delete post"
+                >
+                  <Trash2 className="w-5 h-5 text-gray-500 group-hover:text-red-400" />
+                </button>
+                <button
+                  onClick={() => setSelectedPost(null)}
+                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Modal Content */}
