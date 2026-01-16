@@ -2,6 +2,8 @@
 
 ## Step-by-Step Deployment
 
+**Note**: Render's Blueprint doesn't support static sites in YAML, so we'll deploy services manually. This is actually easier!
+
 ### 1. Push to GitHub
 
 First, initialize Git and push your code:
@@ -26,31 +28,25 @@ git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 git push -u origin main
 ```
 
-### 2. Deploy on Render.com
-
-#### Method 1: Using Blueprint (Easiest)
+### 2. Deploy Backend on Render.com
 
 1. Go to [https://dashboard.render.com](https://dashboard.render.com)
-2. Click **"New"** → **"Blueprint"**
-3. Click **"Connect a repository"**
-4. Select your GitHub repository
-5. Render will detect the `render.yaml` file
-6. Click **"Apply"**
-
-This will create 2 services automatically:
-- `orchestrator-backend` (Python web service)
-- `orchestrator-frontend` (Static site)
-
-#### Method 2: Manual Deploy
-
-If you prefer manual setup, see the full [DEPLOYMENT.md](./DEPLOYMENT.md) guide.
+2. Click **"New"** → **"Web Service"**
+3. Click **"Connect a repository"** and select your GitHub repo
+4. Configure the service:
+   - **Name**: `orchestrator-backend`
+   - **Runtime**: Python 3
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+   - **Instance Type**: Free (or select paid for no cold starts)
+5. Click **"Create Web Service"**
 
 ### 3. Configure Backend Environment Variables
 
-Once services are created:
+Wait for the backend to build (it will fail first time - that's expected):
 
-1. Go to **orchestrator-backend** service
-2. Click **"Environment"** tab
+1. In the **orchestrator-backend** service dashboard
+2. Click **"Environment"** on the left sidebar
 3. Add these variables:
 
    | Key | Value | Example |
@@ -73,17 +69,21 @@ This is the most important step for image generation!
    - **Contents**: Open your local `vertex-ai-key.json` file and paste the entire JSON content
 5. Click **"Save"**
 
-### 5. Configure Frontend
+### 5. Deploy Frontend
 
-1. Wait for backend to finish deploying
-2. Copy the backend URL (looks like: `https://orchestrator-backend.onrender.com`)
-3. Go to **orchestrator-frontend** service
-4. Click **"Environment"** tab
-5. Update the `VITE_API_URL` variable:
+Now let's deploy the frontend as a static site:
+
+1. Go back to [Render Dashboard](https://dashboard.render.com)
+2. Click **"New"** → **"Static Site"**
+3. Select your GitHub repository
+4. Configure:
+   - **Name**: `orchestrator-frontend`
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+5. Add environment variable:
    - Key: `VITE_API_URL`
-   - Value: `https://orchestrator-backend.onrender.com` (your actual backend URL)
-6. Click **"Save Changes"**
-7. Trigger a manual deploy if needed
+   - Value: Your backend URL (e.g., `https://orchestrator-backend.onrender.com`)
+6. Click **"Create Static Site"**
 
 ### 6. Test Your Deployment
 

@@ -16,18 +16,3 @@ services:
         value: /etc/secrets/vertex-ai-key.json
       - key: GCP_REGION
         value: us-central1
-
-  # Frontend (Static Site)
-  - type: static
-    name: orchestrator-frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: NODE_VERSION
-        value: 18.17.0
-      - key: VITE_API_URL
-        value: https://orchestrator-backend.onrender.com
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
