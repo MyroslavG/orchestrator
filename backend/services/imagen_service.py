@@ -15,10 +15,9 @@ class ImagenService:
             import google.genai as genai
 
             # Set credentials environment variable
-            if settings.google_application_credentials:
-                os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
-                    settings.google_application_credentials
-                )
+            credentials_path = settings.get_credentials_path()
+            if credentials_path:
+                os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 
             # Initialize client
             if settings.google_cloud_project:

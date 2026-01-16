@@ -1,0 +1,11 @@
+# Don't upload these to Vercel
+.env
+.env.local
+vertex-ai-key.json
+*-key.json
+*.json.key
+venv/
+__pycache__/
+*.pyc
+node_modules/
+.git/
