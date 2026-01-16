@@ -76,61 +76,7 @@ export default function CreatePost() {
         <p className="text-gray-400">Generate AI-powered content for your social media</p>
       </div>
 
-      {success && (
-        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 mb-6">
-          <p className="text-green-400 font-medium">✨ Post created successfully!</p>
-        </div>
-      )}
-
-      {/* Generated Post Preview */}
-      {generatedPost && (
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden mb-6">
-          <div className="p-4 border-b border-gray-800">
-            <h2 className="text-lg font-semibold">Generated Post Preview</h2>
-          </div>
-
-          {/* Image */}
-          {generatedPost.image_url && (
-            <div className="aspect-square bg-gray-800">
-              <img
-                src={generatedPost.image_url}
-                alt="Generated content"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-
-          {/* Content */}
-          <div className="p-6">
-            <p className="text-gray-300 mb-4 whitespace-pre-wrap">{generatedPost.caption}</p>
-
-            {/* Hashtags */}
-            {generatedPost.hashtags && generatedPost.hashtags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {generatedPost.hashtags.map((tag, idx) => (
-                  <span key={idx} className="text-sm text-blue-400">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {/* Image Prompt Info */}
-            {generatedPost.image_prompt && (
-              <details className="mt-4">
-                <summary className="text-sm text-gray-500 cursor-pointer hover:text-gray-400">
-                  View image generation prompt
-                </summary>
-                <p className="text-xs text-gray-600 mt-2 p-3 bg-gray-800/50 rounded">
-                  {generatedPost.image_prompt}
-                </p>
-              </details>
-            )}
-          </div>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Template Selection */}
         <div>
           <label className="block text-sm font-medium mb-3">Choose Template</label>
@@ -208,7 +154,7 @@ export default function CreatePost() {
         </div>
 
         {/* Schedule Date */}
-        <div>
+        {/* <div>
           <label htmlFor="schedule" className="block text-sm font-medium mb-3">
             Schedule (Optional)
           </label>
@@ -222,7 +168,7 @@ export default function CreatePost() {
             />
             <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
           </div>
-        </div>
+        </div> */}
 
         {/* Submit Button */}
         <button
@@ -243,6 +189,61 @@ export default function CreatePost() {
           )}
         </button>
       </form>
+
+      {/* Success Message */}
+      {success && (
+        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 mt-6">
+          <p className="text-green-400 font-medium">✨ Post created successfully!</p>
+        </div>
+      )}
+
+      {/* Generated Post Preview */}
+      {generatedPost && (
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden mt-6">
+          <div className="p-4 border-b border-gray-800">
+            <h2 className="text-lg font-semibold">Generated Post</h2>
+          </div>
+
+          {/* Image */}
+          {generatedPost.image_url && (
+            <div className="aspect-square bg-gray-800">
+              <img
+                src={generatedPost.image_url}
+                alt="Generated content"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* Content */}
+          <div className="p-6">
+            <p className="text-gray-300 mb-4 whitespace-pre-wrap">{generatedPost.caption}</p>
+
+            {/* Hashtags */}
+            {generatedPost.hashtags && generatedPost.hashtags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {generatedPost.hashtags.map((tag, idx) => (
+                  <span key={idx} className="text-sm text-blue-400">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Image Prompt Info */}
+            {generatedPost.image_prompt && (
+              <details className="mt-4">
+                <summary className="text-sm text-gray-500 cursor-pointer hover:text-gray-400">
+                  View image generation prompt
+                </summary>
+                <p className="text-xs text-gray-600 mt-2 p-3 bg-gray-800/50 rounded">
+                  {generatedPost.image_prompt}
+                </p>
+              </details>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
