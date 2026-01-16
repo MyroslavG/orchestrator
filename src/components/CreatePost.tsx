@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Sparkles, Calendar } from 'lucide-react'
-import { getTemplates, createPost } from '../api'
+import { useState, useEffect } from 'react';
+import { Sparkles } from 'lucide-react'; // Calendar 
+import { getTemplates, createPost } from '../api';
 
 interface Template {
   id: string
