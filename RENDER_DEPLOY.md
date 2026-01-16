@@ -55,8 +55,8 @@ Once services are created:
 
    | Key | Value | Example |
    |-----|-------|---------|
-   | `GEMINI_API_KEY` | Your Gemini API key | AIzaSyC_6qLMAWYFp4NockjUeeGgMjvEOiIlNRY |
-   | `GOOGLE_CLOUD_PROJECT` | Your GCP project ID | orchestrator-484422 |
+   | `GEMINI_API_KEY` | Your Gemini API key | AIzaSy... |
+   | `GOOGLE_CLOUD_PROJECT` | Your GCP project ID | your-project-id |
    | `GCP_REGION` | us-central1 | us-central1 |
 
 4. Click **"Save Changes"**

@@ -39,7 +39,7 @@ The `render.yaml` file in the root directory defines both services. This is the 
    - Navigate to "Environment" tab
    - Add these environment variables:
      - `GEMINI_API_KEY`: Your Gemini API key
-     - `GOOGLE_CLOUD_PROJECT`: Your Google Cloud project ID (e.g., orchestrator-484422)
+     - `GOOGLE_CLOUD_PROJECT`: Your Google Cloud project ID (e.g., your-project-id)
      - `GCP_REGION`: us-central1
 
    **Important**: For `GOOGLE_APPLICATION_CREDENTIALS`:
